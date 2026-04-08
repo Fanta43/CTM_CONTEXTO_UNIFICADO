@@ -1,0 +1,491 @@
+/**
+ * ============================================================================
+ * ESTILOS - Sistema de Tres Vías
+ * ============================================================================
+ * Bootstrap 5 customizations + tema Entorno (frame padre)
+ * Este es el MARCO que contiene todos los módulos
+ * ============================================================================
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+    --ento-primary: #222d32;
+    --ento-primary-light: #2c3b41;
+    --ento-accent: #3c8dbc;
+    --ento-accent-hover: #0082ba;
+    --ento-sidebar-width: 280px;
+    --ento-topbar-height: 60px;
+    --ento-body-bg: #ecf0f5;
+    --ento-font-family: 'Roboto', 'Segoe UI', sans-serif;
+}
+
+/* ── Layout base ─────────────────────────────────────────────────────────── */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--ento-font-family);
+    font-size: 14px;
+    background-color: var(--ento-body-bg);
+    color: #333;
+    overflow-x: hidden;
+}
+
+a { text-decoration: none; color: var(--ento-accent); }
+a:hover { color: var(--ento-accent-hover); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOPBAR - Barra superior fija de 60px
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ento-topbar {
+    height: var(--ento-topbar-height);
+    min-height: var(--ento-topbar-height);
+    max-height: var(--ento-topbar-height);
+    background-color: var(--ento-primary);
+    z-index: 1050;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+.ento-topbar .navbar-brand {
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: #fff !important;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.ento-topbar .navbar-brand img {
+    height: 36px;
+    width: auto;
+}
+
+/* Botón hamburguesa centrado verticalmente */
+.ento-topbar .btn-outline-light {
+    padding: 4px 10px;
+    line-height: 1;
+    border-color: rgba(255,255,255,0.3);
+}
+
+.ento-topbar .btn-outline-light:hover {
+    background-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIDEBAR - Offcanvas lateral
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ento-sidebar {
+    width: var(--ento-sidebar-width);
+    background-color: var(--ento-primary);
+    border-right: none;
+    top: var(--ento-topbar-height) !important;
+    height: calc(100vh - var(--ento-topbar-height)) !important;
+}
+
+.ento-sidebar .offcanvas-body {
+    padding: 0;
+    background-color: var(--ento-primary);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Menu Items ──────────────────────────────────────────────────────────── */
+.ento-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    color: #b8c7ce;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.ento-menu-item:hover {
+    background-color: var(--ento-primary-light);
+    color: #fff;
+    text-decoration: none;
+}
+
+.ento-menu-item.active {
+    background-color: var(--ento-accent);
+    color: #fff;
+    border-left: 4px solid #fff;
+}
+
+.ento-menu-item img {
+    width: 36px;
+    height: 36px;
+    margin-right: 14px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.ento-menu-item .menu-label {
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   USER INFO - En la topbar
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ento-user-info {
+    display: flex;
+    align-items: center;
+    color: #b8c7ce;
+    text-decoration: none;
+}
+
+.ento-user-info:hover {
+    text-decoration: none;
+}
+
+.ento-user-info img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.ento-user-info .user-name {
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.ento-user-info .user-doc {
+    font-size: 0.72rem;
+    color: #8aa4af;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NOTIFICATION BADGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ento-notification-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.ento-notification-badge .badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    font-size: 0.6rem;
+    padding: 3px 5px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MAIN CONTENT - Área principal debajo de la topbar
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ento-main {
+    position: fixed;
+    top: var(--ento-topbar-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.ento-main iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SYSTEM CARDS - Dashboard de módulos (presentacion.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.system-card {
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.3s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+    border: none;
+    border-left: 5px solid var(--card-color, #6c757d);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    color: #333;
+    background: #fff;
+    min-height: 140px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.system-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--card-color, #6c757d);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+}
+
+.system-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+    color: #fff;
+    text-decoration: none !important;
+    border-left-color: transparent;
+}
+
+.system-card:hover::before {
+    opacity: 1;
+}
+
+.system-card .card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--card-color, #6c757d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.system-card:hover .card-icon {
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transform: scale(1.08);
+}
+
+.system-card img {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.system-card .card-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: center;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+    color: #2d3436;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease;
+}
+
+.system-card:hover .card-label {
+    color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOGIN PAGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--ento-primary) 0%, var(--ento-accent) 100%);
+}
+
+.login-card {
+    background: rgba(255,255,255,0.97);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.login-card h2 {
+    color: var(--ento-primary);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.login-card .form-control {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+}
+
+.login-card .input-group-text {
+    background-color: #f8f9fa;
+    border-radius: 8px 0 0 8px;
+    min-width: 44px;
+    justify-content: center;
+}
+
+.btn-ento {
+    background-color: var(--ento-accent);
+    border-color: var(--ento-accent);
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    width: 100%;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.btn-ento:hover {
+    background-color: var(--ento-accent-hover);
+    border-color: var(--ento-accent-hover);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(60,141,188,0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORMS - Focus states
+   ═══════════════════════════════════════════════════════════════════════════ */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--ento-accent);
+    box-shadow: 0 0 0 0.2rem rgba(60,141,188,0.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .ento-user-info .user-name,
+    .ento-user-info .user-doc {
+        display: none;
+    }
+    
+    .ento-topbar .navbar-brand span {
+        display: none;
+    }
+
+    .system-card {
+        height: auto;
+        padding: 12px 14px;
+    }
+
+    .system-card img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .system-card .card-label {
+        font-size: 0.8rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   50 ESTILOS ÚNICOS DE MÓDULOS (mod-style-1 a mod-style-50)
+   ═══════════════════════════════════════════════════════════════════════════
+   Cada estilo tiene gradiente, borde y hover propios.
+   Asignación: config/modules.php → $MODULE_STYLE_MAP
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Base: el card usa --card-color/--card-color2/--card-grad del inline style */
+.system-card::before {
+    background: linear-gradient(var(--card-grad, 135deg), var(--card-color, #6c757d), var(--card-color2, #495057));
+}
+
+/* ── Bordes y acentos únicos por estilo ──────────────────────────────────── */
+
+/* Grupo 1-10: borde izquierdo grueso (5px) */
+.mod-style-1  { border-left: 5px solid #6EEE81; border-radius: 14px; }
+.mod-style-2  { border-left: 5px solid #319888; border-radius: 14px; }
+.mod-style-3  { border-left: 5px solid #2CA58D; border-radius: 14px; }
+.mod-style-4  { border-left: 5px solid #FF61A8; border-radius: 14px; }
+.mod-style-5  { border-left: 5px solid #c987ff; border-radius: 14px; }
+.mod-style-6  { border-left: 5px solid #D4BC5D; border-radius: 14px; }
+.mod-style-7  { border-left: 5px solid #B8336A; border-radius: 14px; }
+.mod-style-8  { border-left: 5px solid #6D454C; border-radius: 14px; }
+.mod-style-9  { border-left: 5px solid #5D5F71; border-radius: 14px; }
+.mod-style-10 { border-left: 5px solid #DBA7B0; border-radius: 14px; }
+
+/* Grupo 11-20 */
+.mod-style-11 { border-left: 5px solid #EAD2AC; border-radius: 14px; }
+.mod-style-12 { border-left: 5px solid #ACACB1; border-radius: 14px; }
+.mod-style-13 { border-left: 5px solid #96ADC8; border-radius: 14px; }
+.mod-style-14 { border-left: 5px solid #b87767; border-radius: 14px; }
+.mod-style-15 { border-left: 5px solid #AD8A64; border-radius: 14px; }
+.mod-style-16 { border-left: 5px solid #CDA6FD; border-radius: 14px; }
+.mod-style-17 { border-left: 5px solid #D0D5A6; border-radius: 14px; }
+.mod-style-18 { border-left: 5px solid #B4A789; border-radius: 14px; }
+.mod-style-19 { border-left: 5px solid #FFB861; border-radius: 14px; }
+.mod-style-20 { border-left: 5px solid #4CAF50; border-radius: 14px; }
+
+/* Grupo 21-30 */
+.mod-style-21 { border-left: 5px solid #FF6961; border-radius: 14px; }
+.mod-style-22 { border-left: 5px solid #E74C3C; border-radius: 14px; }
+.mod-style-23 { border-left: 5px solid #E91E90; border-radius: 14px; }
+.mod-style-24 { border-left: 5px solid #E3D769; border-radius: 14px; }
+.mod-style-25 { border-left: 5px solid #66BB6A; border-radius: 14px; }
+.mod-style-26 { border-left: 5px solid #0F6961; border-radius: 14px; }
+.mod-style-27 { border-left: 5px solid #6AAA81; border-radius: 14px; }
+.mod-style-28 { border-left: 5px solid #5C6BC0; border-radius: 14px; }
+.mod-style-29 { border-left: 5px solid #26A69A; border-radius: 14px; }
+.mod-style-30 { border-left: 5px solid #EF5350; border-radius: 14px; }
+
+/* Grupo 31-40 */
+.mod-style-31 { border-left: 5px solid #AB47BC; border-radius: 14px; }
+.mod-style-32 { border-left: 5px solid #42A5F5; border-radius: 14px; }
+.mod-style-33 { border-left: 5px solid #FFA726; border-radius: 14px; }
+.mod-style-34 { border-left: 5px solid #78909C; border-radius: 14px; }
+.mod-style-35 { border-left: 5px solid #EC407A; border-radius: 14px; }
+.mod-style-36 { border-left: 5px solid #7E57C2; border-radius: 14px; }
+.mod-style-37 { border-left: 5px solid #29B6F6; border-radius: 14px; }
+.mod-style-38 { border-left: 5px solid #66BB6A; border-radius: 14px; }
+.mod-style-39 { border-left: 5px solid #3F51B5; border-radius: 14px; }
+.mod-style-40 { border-left: 5px solid #009688; border-radius: 14px; }
+
+/* Grupo 41-50 */
+.mod-style-41 { border-left: 5px solid #FF7043; border-radius: 14px; }
+.mod-style-42 { border-left: 5px solid #8D6E63; border-radius: 14px; }
+.mod-style-43 { border-left: 5px solid #26C6DA; border-radius: 14px; }
+.mod-style-44 { border-left: 5px solid #9CCC65; border-radius: 14px; }
+.mod-style-45 { border-left: 5px solid #FFCA28; border-radius: 14px; }
+.mod-style-46 { border-left: 5px solid #8BC34A; border-radius: 14px; }
+.mod-style-47 { border-left: 5px solid #FF8A65; border-radius: 14px; }
+.mod-style-48 { border-left: 5px solid #4DB6AC; border-radius: 14px; }
+.mod-style-49 { border-left: 5px solid #7986CB; border-radius: 14px; }
+.mod-style-50 { border-left: 5px solid #A1887F; border-radius: 14px; }
+
+/* Fallback para módulos sin estilo asignado */
+.mod-style-0  { border-left: 3px dashed #adb5bd; border-radius: 14px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS & SCROLLBAR (consistente con pade y repo)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #a1a1a1; }

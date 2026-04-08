@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find 'D:\\\\xampp\\\\htdocs\\\\ctm\\\\contexto_unificado\\\\ctm_morebius' -type d -exec bash -c 'dir=\"{}\"; count=$\\(find \"$dir\" -maxdepth 1 -type f | wc -l\\); if [ \"$count\" -gt 0 ]; then echo \"[$count files] $dir\"; fi' ';')"
+    ]
+  }
+}

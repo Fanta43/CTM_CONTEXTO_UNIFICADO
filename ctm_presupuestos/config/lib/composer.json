@@ -1,0 +1,11 @@
+{
+    "name": "ctm/pade-lib",
+    "description": "Librerías del Sistema PADE - PHPMailer y Twilio",
+    "require": {
+        "phpmailer/phpmailer": "^6.9",
+        "twilio/sdk": "^7.0"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}

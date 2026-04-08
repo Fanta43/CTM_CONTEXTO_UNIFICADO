@@ -1,0 +1,59 @@
+# ── Backups y versiones antiguas ──────────────────────────────────────────────
+*_old/
+*_old2/
+* copy/
+* - copia/
+old_*/
+bkp/
+herramientas_mejora/
+
+# ── Modulos no principales ───────────────────────────────────────────────────
+aced_chatai/
+ctm_ahorros/
+ctm_autogestion/
+ctm_chatia/
+ctm_consola/
+ctm_gastcomunes/
+ctm_hsextras/
+ctm_monedas/
+ctm_org_old/
+ctm_organica/
+ctm_pade/
+ctm_reportes/
+ctm_segtramites/
+ctm_usu/
+openai_old/
+polo_ofertaadmin/
+prueba_openai/
+uai_notebook/
+nbproject/
+cron_python3/
+
+# ── Vendor / dependencias ───────────────────────────────────────────────────
+vendor/
+node_modules/
+
+# ── Archivos del sistema ────────────────────────────────────────────────────
+Thumbs.db
+.DS_Store
+*.mno
+*.db
+*.xcf
+*.cpt
+
+# ── IDE / editor ────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── Archivos sensibles ─────────────────────────────────────────────────────
+*.pem
+*.key
+*.env
+
+# ── Documentos sueltos raiz ─────────────────────────────────────────────────
+CTM_Documentacion_Analisis_FODA_v2.docx
+infophp.php
+intermedio_aico_old.php

@@ -1,0 +1,1 @@
+<?php header("location:ctm_entorno/default.php"); ?>

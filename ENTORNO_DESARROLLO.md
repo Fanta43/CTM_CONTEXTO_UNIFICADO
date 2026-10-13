@@ -28,7 +28,7 @@ lo carga primero y lo que defina ahi manda:
 Para crear el tuyo, copia el ejemplo de cada modulo y ajustalo:
 
 ```powershell
-cd D:\xampp\htdocs\ctm\contexto_unificado
+cd C:\dev\ctm\contexto_unificado
 foreach ($m in "ctm_entorno","ctm_inventarios","ctm_morebius","ctm_presupuestos") {
   Copy-Item "$m\config\config.local.php.ejemplo" "$m\config\config.local.php"
 }
@@ -40,13 +40,24 @@ reales y `MOSTRAR_ERRORES` en `'off'`. Como no estan en git, un `git pull` nunca
 
 ## 1. Levantar el entorno de desarrollo (una sola vez)
 
-1. Instalar Docker Desktop para Windows (con WSL2).
-2. Clonar o actualizar el repo en la notebook.
-3. Crear los `config.local.php` (bloque de arriba).
-4. Levantar los servicios:
+En una notebook limpia, `herramientas/preparar_notebook.ps1` instala Git y Docker Desktop,
+clona el repo en `C:\dev\ctm\contexto_unificado` y crea los `config.local.php`.
+Se descarga y ejecuta asi, en PowerShell como Administrador:
 
 ```powershell
-cd D:\xampp\htdocs\ctm\contexto_unificado
+cd $HOME\Downloads
+curl.exe -L -o preparar_notebook.ps1 https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/preparar_notebook.ps1
+powershell -ExecutionPolicy Bypass -File .\preparar_notebook.ps1
+```
+
+Si Docker Desktop pide reiniciar Windows (WSL2), reiniciar y volver a correr el script.
+Luego abrir Docker Desktop una vez y esperar a que diga "Engine running".
+
+Si ya tenes Git y Docker, alcanza con clonar el repo y crear los `config.local.php`
+(bloque de arriba). Despues, levantar los servicios:
+
+```powershell
+cd C:\dev\ctm\contexto_unificado
 docker compose up -d --build
 ```
 

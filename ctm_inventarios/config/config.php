@@ -23,8 +23,15 @@ if (!defined('APP_INCLUDES')) define('APP_INCLUDES', APP_ROOT . 'includes' . DIR
 if (!defined('APP_ASSETS'))   define('APP_ASSETS', APP_ROOT . 'assets' . DIRECTORY_SEPARATOR);
 if (!defined('APP_WEB'))      define('APP_WEB', APP_ROOT . 'web' . DIRECTORY_SEPARATOR);
 
+// ── Configuración local (desarrollo / producción, NO se sube a git) ─────────
+// Si existe config/config.local.php se carga primero y sus valores mandan.
+// Ver config.local.php.ejemplo en esta misma carpeta.
+if (file_exists(__DIR__ . '/config.local.php')) {
+    require_once __DIR__ . '/config.local.php';
+}
+
 // ── URLs ─────────────────────────────────────────────────────────────────────
-$servidor = 'http://localhost/ctm/contexto_unificado/ctm_inventarios/';
+if (!isset($servidor)) $servidor = 'http://localhost/ctm/contexto_unificado/ctm_inventarios/';
 if (!defined('APP_URL'))      define('APP_URL', $servidor);
 
 // ── Configuración general ────────────────────────────────────────────────────
@@ -33,7 +40,8 @@ $email_mesadeayuda = "atencion_usuarios@saltogrande.org";
 $servidor_img = 'https://intranet.saltogrande.org/imagenes/img_personal/';
 
 // ── Configuración de errores ─────────────────────────────────────────────────
-ini_set('display_errors', 'off');
+if (!defined('MOSTRAR_ERRORES')) define('MOSTRAR_ERRORES', 'off');
+ini_set('display_errors', MOSTRAR_ERRORES);
 error_reporting(E_ALL);
 ini_set('extension', 'php_openssl.dll');
 
@@ -42,55 +50,57 @@ ini_set('extension', 'php_openssl.dll');
 // DB '2'       = ctm_ocsweb  (OCS Inventory - READ-ONLY)
 // DB '3'       = morebius    (READ-ONLY: articulos_con, artipcel, etc.)
 // DB '4'       = inventario  (legacy, no disponible localmente)
-function getDbConfig($db = '0') {
-    $configs = [
-        '0' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'contexto_unificado',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ],
-        '1' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'contexto_unificado',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ],
-        '2' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'ctm_ocsweb',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ],
-        '3' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'morebius',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ],
-        '4' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'inventario',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ]
-    ];
-    return isset($configs[$db]) ? $configs[$db] : $configs['0'];
+if (!function_exists('getDbConfig')) {
+    function getDbConfig($db = '0') {
+        $configs = [
+            '0' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'contexto_unificado',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ],
+            '1' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'contexto_unificado',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ],
+            '2' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'ctm_ocsweb',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ],
+            '3' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'morebius',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ],
+            '4' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'inventario',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ]
+        ];
+        return isset($configs[$db]) ? $configs[$db] : $configs['0'];
+    }
 }
 
 // ── Configuración de comunicaciones ──────────────────────────────────────────

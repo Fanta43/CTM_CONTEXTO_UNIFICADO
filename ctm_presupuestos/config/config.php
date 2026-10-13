@@ -21,8 +21,15 @@ if (!defined('APP_INCLUDES')) define('APP_INCLUDES', APP_ROOT . 'includes' . DIR
 if (!defined('APP_ASSETS'))   define('APP_ASSETS', APP_ROOT . 'assets' . DIRECTORY_SEPARATOR);
 if (!defined('APP_WEB'))      define('APP_WEB', APP_ROOT . 'web' . DIRECTORY_SEPARATOR);
 
+// ── Configuración local (desarrollo / producción, NO se sube a git) ─────────
+// Si existe config/config.local.php se carga primero y sus valores mandan.
+// Ver config.local.php.ejemplo en esta misma carpeta.
+if (file_exists(__DIR__ . '/config.local.php')) {
+    require_once __DIR__ . '/config.local.php';
+}
+
 // ── URLs ─────────────────────────────────────────────────────────────────────
-$servidor = 'http://localhost/ctm/contexto_unificado/ctm_presupuestos/';
+if (!isset($servidor)) $servidor = 'http://localhost/ctm/contexto_unificado/ctm_presupuestos/';
 if (!defined('APP_URL'))      define('APP_URL', $servidor);
 
 // ── Configuración general ────────────────────────────────────────────────────
@@ -37,42 +44,45 @@ if (!defined('OLLAMA_MODEL')) define('OLLAMA_MODEL', 'qwen3.5:9b');
 if (!defined('OLLAMA_MODEL_GRANDE')) define('OLLAMA_MODEL_GRANDE', 'phi3:14b');
 
 // ── Configuración de errores ─────────────────────────────────────────────────
-ini_set('display_errors', 'on');
+if (!defined('MOSTRAR_ERRORES')) define('MOSTRAR_ERRORES', 'on');
+ini_set('display_errors', MOSTRAR_ERRORES);
 error_reporting(E_ALL);
 ini_set('extension', 'php_openssl.dll');
 
 // ── Conexión a Base de Datos ─────────────────────────────────────────────────
-function getDbConfig($db = '0') {
-    $configs = [
-        '0' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'contexto_unificado',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ],
-        '1' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'contexto_unificado',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ],
-        '2' => [
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => '',
-            'database' => 'contexto_unificado',
-            'port'     => 3306,
-            'charset'  => 'utf8mb4',
-            'cert'     => ''
-        ]
-    ];
-    return isset($configs[$db]) ? $configs[$db] : $configs['0'];
+if (!function_exists('getDbConfig')) {
+    function getDbConfig($db = '0') {
+        $configs = [
+            '0' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'contexto_unificado',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ],
+            '1' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'contexto_unificado',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ],
+            '2' => [
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => '',
+                'database' => 'contexto_unificado',
+                'port'     => 3306,
+                'charset'  => 'utf8mb4',
+                'cert'     => ''
+            ]
+        ];
+        return isset($configs[$db]) ? $configs[$db] : $configs['0'];
+    }
 }
 
 // ── Configuración de comunicaciones (legacy) ─────────────────────────────────

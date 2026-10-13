@@ -57,3 +57,10 @@ Thumbs.db
 CTM_Documentacion_Analisis_FODA_v2.docx
 infophp.php
 intermedio_aico_old.php
+
+# ── Configuracion local por entorno (notebook / torito test / torito prod) ──
+config.local.php
+
+# ── Dumps de base de datos traidos de produccion ───────────────────────────
+herramientas/db/dumps/*
+!herramientas/db/dumps/.gitkeep

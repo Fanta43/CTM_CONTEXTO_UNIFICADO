@@ -64,3 +64,4 @@ config.local.php
 # ── Dumps de base de datos traidos de produccion ───────────────────────────
 herramientas/db/dumps/*
 !herramientas/db/dumps/.gitkeep
+herramientas/db/credenciales.local.ps1

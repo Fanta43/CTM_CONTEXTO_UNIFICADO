@@ -1,0 +1,4 @@
+# Copiar como credenciales.local.ps1 (en esta misma carpeta) y completar.
+# credenciales.local.ps1 NO se sube a git. Si existe, sincronizar_bd.ps1 no pide la contrasena.
+$UsuarioBd = "root"
+$ClaveBd = "la-contrasena-de-mariadb-en-torito"

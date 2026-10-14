@@ -2,7 +2,8 @@
 # Uso:  powershell -ExecutionPolicy Bypass -File herramientas\db\sincronizar_bd.ps1
 #       (opcional) -Bases contexto_unificado,morebius -SoloBajar
 # Requisitos: ssh ctm223 funcionando, Docker Desktop corriendo con "docker compose up -d".
-# La contrasena de MariaDB en torito se pide al ejecutar; no queda guardada en ningun lado.
+# La contrasena de MariaDB en torito se pide al ejecutar, salvo que exista
+# herramientas\db\credenciales.local.ps1 (ignorado por git, ver el .ejemplo) con $UsuarioBd y $ClaveBd.
 
 param(
     [string]$Alias = "ctm223",
@@ -15,8 +16,18 @@ param(
 
 $CarpetaDumps = Join-Path $PSScriptRoot "dumps"
 $RaizRepo = Resolve-Path (Join-Path $PSScriptRoot "..\..")
+$ArchivoCredenciales = Join-Path $PSScriptRoot "credenciales.local.ps1"
+$ClaveBd = $null
+
+function Cargar-Credenciales {
+    if (Test-Path $ArchivoCredenciales) {
+        . $ArchivoCredenciales
+        Write-Host "Credenciales tomadas de $ArchivoCredenciales (usuario $UsuarioBd)"
+    }
+}
 
 function Pedir-ClaveBd {
+    if ($ClaveBd) { return $ClaveBd }
     $segura = Read-Host "Contrasena de MariaDB para $UsuarioBd en torito" -AsSecureString
     $ptr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($segura)
     $clave = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
@@ -66,6 +77,7 @@ function Verificar-Docker {
 }
 
 New-Item -ItemType Directory -Path $CarpetaDumps -Force | Out-Null
+Cargar-Credenciales
 
 if (-not $SoloCargar) {
     $clave = Pedir-ClaveBd

@@ -38,6 +38,23 @@ Los ejemplos ya traen los valores del entorno Docker (host `db`, usuario `root`,
 clave `ctm_dev`). En torito hay que crear los mismos archivos con las credenciales
 reales y `MOSTRAR_ERRORES` en `'off'`. Como no estan en git, un `git pull` nunca los pisa.
 
+## 0. Hacer que el repo sea copia exacta de produccion
+
+La fuente de verdad es torito. Antes de desarrollar, traer su codigo al repo:
+
+```powershell
+cd C:\dev\ctm\contexto_unificado
+powershell -ExecutionPolicy Bypass -File herramientas\traer_codigo_produccion.ps1
+git status
+git add -A ; git commit -m "Sincronizar codigo con produccion torito" ; git push
+```
+
+El script empaqueta `/var/www/ctm/contexto_unificado` en torito (sin `.git` ni los
+`config/config.php`, que tienen credenciales), lo descomprime encima del repo local y muestra
+un resumen: archivos modificados, archivos nuevos, archivos del repo que ya no existen en
+produccion (se borran solo con `-BorrarFaltantes`) y carpetas que `.gitignore` deja afuera.
+No toca produccion. Repetirlo cada vez que se sospeche que alguien edito a mano en torito.
+
 ## 1. Levantar el entorno de desarrollo (una sola vez)
 
 En una notebook limpia, `herramientas/preparar_notebook.ps1` instala Git y Docker Desktop,

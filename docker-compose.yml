@@ -3,17 +3,24 @@
 # Uso:  docker compose up -d      (levantar)
 #       docker compose down       (bajar, conserva la base)
 #       docker compose down -v    (bajar y borrar la base)
-# Web:      http://localhost:8080/ctm/contexto_unificado/
+# Web:      https://localhost:8080/ctm/contexto_unificado/   (certificado autofirmado: aceptar el aviso del navegador)
 # Adminer:  http://localhost:8081   (servidor: db, usuario: root, clave: ctm_dev)
 
 services:
   web:
     image: nginx:1.28
     ports:
-      - "8080:80"
+      - "8080:443"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ctm_certs:/etc/nginx/certs
       - .:/var/www/ctm/contexto_unificado
+    # genera el certificado autofirmado la primera vez y arranca nginx
+    command: >
+      sh -c "mkdir -p /etc/nginx/certs
+      && ([ -f /etc/nginx/certs/dev.crt ] || openssl req -x509 -nodes -newkey rsa:2048 -days 3650
+          -subj '/CN=localhost' -keyout /etc/nginx/certs/dev.key -out /etc/nginx/certs/dev.crt)
+      && exec nginx -g 'daemon off;'"
     depends_on:
       - php
 
@@ -47,3 +54,4 @@ services:
 
 volumes:
   ctm_db:
+  ctm_certs:

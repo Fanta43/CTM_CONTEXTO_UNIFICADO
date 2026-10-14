@@ -9,7 +9,7 @@
  */
 
 // URL base de este módulo en este entorno
-$servidor = 'http://localhost:8080/ctm/contexto_unificado/ctm_inventarios/';
+$servidor = 'https://localhost:8080/ctm/contexto_unificado/ctm_inventarios/';
 
 // 'on' en desarrollo, 'off' en producción
 define('MOSTRAR_ERRORES', 'on');

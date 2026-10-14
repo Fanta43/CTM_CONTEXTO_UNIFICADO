@@ -32,7 +32,7 @@ Si torito no tuviera Gitea, la alternativa es un repositorio bare por SSH:
 
 | Entorno | Donde | Codigo | Base de datos | URL |
 |---|---|---|---|---|
-| Desarrollo | Notebook, Docker Desktop | este repo (rama de trabajo) | copia de produccion, local | http://localhost:8080/ctm/contexto_unificado/ |
+| Desarrollo | Notebook, Docker Desktop | este repo (rama de trabajo) | copia de produccion, local | https://localhost:8080/ctm/contexto_unificado/ |
 | Test | torito `/var/www/ctm/contexto_unificado_test` | rama en prueba | `contexto_unificado_test` (copia) | https://172.16.1.223/ctm/contexto_unificado_test/ |
 | Produccion | torito `/var/www/ctm/contexto_unificado` | rama `main` | `contexto_unificado` | https://172.16.1.223/ctm/contexto_unificado/ |
 
@@ -109,13 +109,13 @@ docker compose up -d --build
 powershell -ExecutionPolicy Bypass -File herramientas\db\sincronizar_bd.ps1
 ```
 
-6. Abrir http://localhost:8080/ctm/contexto_unificado/ctm_inventarios/
+6. Abrir https://localhost:8080/ctm/contexto_unificado/ctm_inventarios/
 
 Servicios que quedan corriendo:
 
 | Servicio | Puerto en la notebook | Para que |
 |---|---|---|
-| nginx + PHP 8.5 | 8080 | la aplicacion |
+| nginx + PHP 8.5 | 8080 (HTTPS) | la aplicacion. Certificado autofirmado: el navegador avisa una vez, aceptar y continuar |
 | MariaDB 11.8 | 3307 | conectarse desde HeidiSQL o similar (root / ctm_dev) |
 | Adminer | 8081 | administrar la base desde el navegador |
 
@@ -203,6 +203,10 @@ docker compose down -v            # apagar y borrar la base local
 ```
 
 ## Cosas a tener en cuenta
+
+- La aplicacion fuerza HTTPS (`ctm_entorno/default.php`), por eso el entorno local tambien sirve
+  HTTPS en el 8080 con un certificado autofirmado. Entrar siempre por `https://localhost:8080`;
+  si se entra por `http://` redirige solo.
 
 - Linux distingue mayusculas en nombres de archivo; Windows no. Un `include 'Archivo.php'`
   que funciona en XAMPP puede fallar en Docker y en torito. Eso es justamente lo que

@@ -63,7 +63,7 @@ function Mostrar-SiguientesPasos {
     Write-Host "  2. cd $CarpetaRepo"
     Write-Host "  3. docker compose up -d --build"
     Write-Host "  4. powershell -ExecutionPolicy Bypass -File herramientas\db\sincronizar_bd.ps1"
-    Write-Host "  5. Abrir http://localhost:8080/ctm/contexto_unificado/ctm_inventarios/"
+    Write-Host "  5. Abrir https://localhost:8080/ctm/contexto_unificado/ctm_inventarios/"
 }
 
 Verificar-Admin

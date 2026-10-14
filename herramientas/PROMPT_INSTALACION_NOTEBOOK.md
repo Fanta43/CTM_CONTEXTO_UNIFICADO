@@ -72,7 +72,7 @@ Pasos a seguir, en este orden. Dame un comando por vez y espera mi salida antes 
    Tiene que arrancar con "Credenciales tomadas de ...credenciales.local.ps1 (usuario root)".
 
 9. Probar en el navegador:
-     http://localhost:8080/ctm/contexto_unificado/ctm_entorno/default.php
+     https://localhost:8080/ctm/contexto_unificado/ctm_entorno/default.php
    Adminer en http://localhost:8081 (servidor db, usuario root, clave ctm_dev).
    Tiene que verse igual que produccion. Si no, traer el codigo de torito al repo:
      powershell -ExecutionPolicy Bypass -File herramientas\traer_codigo_produccion.ps1

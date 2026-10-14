@@ -7,7 +7,7 @@
  * Valores de abajo: entorno Docker de desarrollo (docker-compose.yml en la raíz).
  */
 
-define('APP_URL', 'http://localhost:8080/ctm/contexto_unificado/ctm_entorno/');
+define('APP_URL', 'https://localhost:8080/ctm/contexto_unificado/ctm_entorno/');
 define('MOSTRAR_ERRORES', '1');
 
 define('DB_CONFIGS', serialize([

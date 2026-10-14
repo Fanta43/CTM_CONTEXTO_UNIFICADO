@@ -40,7 +40,7 @@ Trabajo con un sistema web llamado **CTM (Contexto Unificado)** compuesto por 3 
 - **Test:** misma máquina, carpeta `/var/www/ctm/contexto_unificado_test` y base `contexto_unificado_test`,
   en `https://172.16.1.223/ctm/contexto_unificado_test/`.
 - **Desarrollo:** notebook con Docker (nginx + PHP 8.5 + MariaDB 11.8, mismas versiones que producción),
-  repo en `C:\dev\ctm\contexto_unificado`, URL `http://localhost:8080/ctm/contexto_unificado/`.
+  repo en `C:\dev\ctm\contexto_unificado`, URL `https://localhost:8080/ctm/contexto_unificado/`.
 - La fuente de verdad del código es producción: el repo debe ser copia exacta de torito
   (`herramientas\traer_codigo_produccion.ps1`). Detalle completo en `ENTORNO_DESARROLLO.md`.
 

@@ -130,7 +130,7 @@ rama nueva  ->  editar  ->  probar en localhost:8080  ->  commit + push  ->  PR
 
 ```powershell
 git checkout -b mi-cambio
-# ... editar, probar en http://localhost:8080 ...
+# ... editar, probar en https://localhost:8080 ...
 git add . ; git commit -m "Descripcion del cambio" ; git push -u origin mi-cambio
 powershell -ExecutionPolicy Bypass -File herramientas\desplegar.ps1 -Destino test -Rama mi-cambio
 # probar en el test de torito; si esta bien, merge del PR a main en el Gitea de torito y luego:

@@ -33,7 +33,7 @@ Opcion B, sin clonar el repo (descarga solo el script):
 
 ```powershell
 cd $HOME\Downloads
-curl.exe -L -o configurar_ssh.ps1 https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/ssh/configurar_ssh.ps1
+scp serviciosau@172.16.1.223:/var/www/ctm/contexto_unificado/herramientas/ssh/configurar_ssh.ps1 .
 powershell -ExecutionPolicy Bypass -File .\configurar_ssh.ps1 -Usuario serviciosau
 ```
 

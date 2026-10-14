@@ -1,7 +1,32 @@
 # Entorno de desarrollo CTM
 
 Como trabajar en la notebook con un entorno igual al de produccion (torito) y pasar
-los cambios a produccion con seguridad.
+los cambios a produccion con seguridad. **Nada en la nube**: el repositorio git central
+vive en el propio torito y las notebooks trabajan contra el.
+
+## Repositorio git central (en torito)
+
+| Dato | Valor |
+|---|---|
+| Servicio | Gitea en torito, http://172.16.1.223:3000 (usuario `farinong`) |
+| Repositorio | `farinong/contexto_unificado`, privado |
+| URL desde la notebook | `http://172.16.1.223:3000/farinong/contexto_unificado.git` |
+| URL desde el propio torito | `http://127.0.0.1:3000/farinong/contexto_unificado.git` |
+
+Primera vez: crear el repositorio vacio en Gitea (privado, sin README) y publicar el repo local:
+
+```powershell
+cd C:\dev\ctm\contexto_unificado
+powershell -ExecutionPolicy Bypass -File herramientas\publicar_repo_en_torito.ps1
+```
+
+Git en Windows guarda el usuario y la contrasena del Gitea la primera vez que los pide.
+En torito, para que produccion y test puedan hacer `git pull` sin pedir clave cada vez:
+`git config --global credential.helper store` y hacer el primer pull a mano.
+
+Si torito no tuviera Gitea, la alternativa es un repositorio bare por SSH:
+`herramientas/torito/crear_repo_servidor.sh` y despues
+`publicar_repo_en_torito.ps1 -UrlRepo ctm223:/opt/git/contexto_unificado.git`.
 
 ## Los tres entornos
 
@@ -63,7 +88,7 @@ Se descarga y ejecuta asi, en PowerShell como Administrador:
 
 ```powershell
 cd $HOME\Downloads
-curl.exe -L -o preparar_notebook.ps1 https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/preparar_notebook.ps1
+scp ctm223:/var/www/ctm/contexto_unificado/herramientas/preparar_notebook.ps1 .
 powershell -ExecutionPolicy Bypass -File .\preparar_notebook.ps1
 ```
 
@@ -108,7 +133,7 @@ git checkout -b mi-cambio
 # ... editar, probar en http://localhost:8080 ...
 git add . ; git commit -m "Descripcion del cambio" ; git push -u origin mi-cambio
 powershell -ExecutionPolicy Bypass -File herramientas\desplegar.ps1 -Destino test -Rama mi-cambio
-# probar en el test de torito; si esta bien, merge del PR a main en GitHub y luego:
+# probar en el test de torito; si esta bien, merge del PR a main en el Gitea de torito y luego:
 powershell -ExecutionPolicy Bypass -File herramientas\desplegar.ps1 -Destino prod
 ```
 
@@ -138,7 +163,7 @@ al final intercambia las carpetas. La carpeta anterior queda como respaldo
 `contexto_unificado_old_FECHA`.
 
 ```powershell
-ssh ctm223 "curl -fsSL https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/torito/adoptar_git_produccion.sh -o /tmp/adoptar_git_produccion.sh"
+scp herramientas\torito\adoptar_git_produccion.sh ctm223:/tmp/
 ssh -t ctm223 "bash /tmp/adoptar_git_produccion.sh"
 ```
 
@@ -160,7 +185,7 @@ la de produccion y genera los `config.local.php` apuntando a esa base y a
 quedan apuntando a las reales, que son de solo lectura.
 
 ```powershell
-ssh ctm223 "curl -fsSL https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/torito/crear_entorno_test.sh -o /tmp/crear_entorno_test.sh"
+scp herramientas\torito\crear_entorno_test.sh ctm223:/tmp/
 ssh -t ctm223 "bash /tmp/crear_entorno_test.sh"
 ```
 

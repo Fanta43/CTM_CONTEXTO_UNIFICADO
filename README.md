@@ -19,6 +19,12 @@ más `ctm_entorno` como base común.
 Es el servidor real en uso. Los cambios se prueban primero en la notebook (Docker) y en la
 carpeta de test de torito; a producción solo llega la rama `main` con `herramientas\desplegar.ps1`.
 
+## Repositorio git
+
+El repositorio central está en el **Gitea de torito**: http://172.16.1.223:3000, repo
+`farinong/contexto_unificado` (privado). Las notebooks clonan y empujan contra esa URL, y
+producción y test hacen `git pull` desde ella. **Nada en la nube.**
+
 ## Documentación
 
 - `ENTORNO_DESARROLLO.md`: cómo instalar el entorno de desarrollo, sincronizar código y bases

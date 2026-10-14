@@ -27,6 +27,8 @@ producción y test hacen `git pull` desde ella. **Nada en la nube.**
 
 ## Documentación
 
+- `CLAUDE.md`: guía para sesiones de Claude: estilo, entornos, accesos, herramientas y reglas.
+
 - `ENTORNO_DESARROLLO.md`: cómo instalar el entorno de desarrollo, sincronizar código y bases
   con producción, armar el entorno de test y desplegar.
 - `herramientas/PROMPT_INSTALACION_NOTEBOOK.md`: prompt para repetir la instalación en otra notebook.

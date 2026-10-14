@@ -39,6 +39,45 @@ No usar GitHub ni servicios externos para codigo, datos o credenciales.
 - El entorno local sirve HTTPS en el 8080 con certificado autofirmado porque la aplicacion fuerza
   HTTPS en `ctm_entorno/default.php`. No quitar esa redireccion.
 
+## Donde estan los archivos de desarrollo
+
+La carpeta `C:\dev\ctm\contexto_unificado` de la notebook es a la vez el repositorio git de
+trabajo (origin = Gitea de torito), la carpeta que sirve Docker (nginx y PHP la montan directo:
+cualquier edicion se ve al instante en https://localhost:8080 sin reiniciar) y una copia del
+codigo de produccion.
+
+| Que | Donde |
+|---|---|
+| Modulos de la aplicacion | `ctm_entorno/`, `ctm_inventarios/`, `ctm_morebius/`, `ctm_presupuestos/`, `shared/` |
+| Configuracion local de cada modulo (no va a git) | `ctm_*/config/config.local.php` |
+| Entorno Docker | `docker-compose.yml`, `docker/nginx/`, `docker/php/` |
+| Bases bajadas de torito (no van a git) | `herramientas/db/dumps/*.sql` |
+| Credenciales de MariaDB (no va a git) | `herramientas/db/credenciales.local.ps1` |
+| Scripts de sincronizacion y despliegue | `herramientas/` |
+| Guias | `CLAUDE.md`, `ENTORNO_DESARROLLO.md`, `README.md`, `PROMPT_MEJORA_CTM.md` |
+
+Los datos de las bases locales no estan en archivos de la carpeta: viven en el volumen Docker
+`ctm_db`, que persiste aunque se apaguen los contenedores. Se administran con Adminer en
+http://localhost:8081 (servidor `db`, usuario `root`, clave `ctm_dev`).
+
+## Ciclo de trabajo
+
+```powershell
+cd C:\dev\ctm\contexto_unificado
+git checkout -b mi-cambio
+# editar, probar en https://localhost:8080/ctm/contexto_unificado/
+git add . ; git commit -m "Descripcion del cambio" ; git push -u origin mi-cambio
+# pull request en http://172.16.1.223:3000 y merge a main
+powershell -ExecutionPolicy Bypass -File herramientas\desplegar.ps1 -Destino test -Rama mi-cambio   # probar en torito
+powershell -ExecutionPolicy Bypass -File herramientas\desplegar.ps1 -Destino prod                   # solo main, pide SI
+```
+
+Estado actual (2026-10-14): produccion y desarrollo funcionan y `main` en Gitea es copia de
+produccion. **Pendiente:** que la carpeta de produccion en torito sea un checkout de git
+(`herramientas/torito/adoptar_git_produccion.sh`, fuera de horario, deja respaldo) y armar el
+entorno de test (`herramientas/torito/crear_entorno_test.sh`). Hasta entonces `desplegar.ps1`
+no puede actualizar torito.
+
 ## Repositorio git
 
 - Central: **Gitea en torito**, http://172.16.1.223:3000, repo privado `farinong/contexto_unificado`.

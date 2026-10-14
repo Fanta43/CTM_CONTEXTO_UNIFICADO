@@ -1,12 +1,13 @@
 # Prepara una notebook Windows limpia para desarrollar CTM:
 # instala Git y Docker Desktop (con winget), clona el repo y crea los config.local.php.
+# El repo se clona desde el git de torito; va a pedir usuario y contrasena de ese git una vez.
 # Ejecutar en PowerShell COMO ADMINISTRADOR:
 #   powershell -ExecutionPolicy Bypass -File preparar_notebook.ps1
 # Si Docker Desktop pide reiniciar (WSL2), reiniciar y volver a correr el script: es seguro repetirlo.
 
 param(
     [string]$CarpetaRepo = "C:\dev\ctm\contexto_unificado",
-    [string]$UrlRepo = "https://github.com/Fanta43/CTM_CONTEXTO_UNIFICADO.git",
+    [string]$UrlRepo = "http://172.16.1.223:3000/farinong/contexto_unificado.git",
     [string]$Rama = "main"
 )
 

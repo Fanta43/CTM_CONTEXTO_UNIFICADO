@@ -11,7 +11,7 @@
 #   5. Intercambia las carpetas. La vieja queda como respaldo: contexto_unificado_old_FECHA
 #
 # Uso (desde la notebook):
-#   ssh ctm223 "curl -fsSL https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/torito/adoptar_git_produccion.sh -o /tmp/adoptar_git_produccion.sh"
+#   scp herramientas\torito\adoptar_git_produccion.sh ctm223:/tmp/
 #   ssh -t ctm223 "bash /tmp/adoptar_git_produccion.sh"
 # Si falla por permisos, correrlo con sudo.
 # Volver atras:  mv contexto_unificado contexto_unificado_git && mv contexto_unificado_old_FECHA contexto_unificado
@@ -20,7 +20,7 @@ set -e
 RUTA_PROD="${RUTA_PROD:-/var/www/ctm/contexto_unificado}"
 URL_PROD="${URL_PROD:-https://172.16.1.223/ctm/contexto_unificado}"
 BD_PROD="${BD_PROD:-contexto_unificado}"
-URL_REPO="${URL_REPO:-https://github.com/Fanta43/CTM_CONTEXTO_UNIFICADO.git}"
+URL_REPO="${URL_REPO:-http://127.0.0.1:3000/farinong/contexto_unificado.git}"
 RAMA="${RAMA:-main}"
 
 FECHA=$(date +%Y%m%d_%H%M)

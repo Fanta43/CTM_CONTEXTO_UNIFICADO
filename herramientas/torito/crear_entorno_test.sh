@@ -4,7 +4,7 @@
 #   base:    contexto_unificado_test               (copia de contexto_unificado)
 #   url:     https://172.16.1.223/ctm/contexto_unificado_test/
 # Uso (desde la notebook):
-#   ssh ctm223 "curl -fsSL https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/torito/crear_entorno_test.sh -o /tmp/crear_entorno_test.sh"
+#   scp herramientas\torito\crear_entorno_test.sh ctm223:/tmp/
 #   ssh -t ctm223 "bash /tmp/crear_entorno_test.sh"
 # Pide usuario y contrasena de MariaDB una sola vez. Es seguro repetirlo.
 set -e
@@ -13,7 +13,7 @@ RUTA_TEST="${RUTA_TEST:-/var/www/ctm/contexto_unificado_test}"
 BD_PROD="${BD_PROD:-contexto_unificado}"
 BD_TEST="${BD_TEST:-contexto_unificado_test}"
 URL_TEST="${URL_TEST:-https://172.16.1.223/ctm/contexto_unificado_test}"
-URL_REPO="${URL_REPO:-https://github.com/Fanta43/CTM_CONTEXTO_UNIFICADO.git}"
+URL_REPO="${URL_REPO:-http://127.0.0.1:3000/farinong/contexto_unificado.git}"
 RAMA="${RAMA:-main}"
 
 verificar_permisos() {

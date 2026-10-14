@@ -35,7 +35,7 @@ function Verificar-Repo {
     ssh $Alias "test -d $Ruta/.git"
     if ($LASTEXITCODE -ne 0) {
         Write-Host "En torito no hay un repo git en $Ruta."
-        Write-Host "Clonalo primero:  ssh $Alias 'git clone https://github.com/Fanta43/CTM_CONTEXTO_UNIFICADO.git $Ruta'"
+        Write-Host "Clonalo primero:  ssh $Alias 'git clone http://127.0.0.1:3000/farinong/contexto_unificado.git $Ruta'"
         exit 1
     }
 }

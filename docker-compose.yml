@@ -16,11 +16,7 @@ services:
       - ctm_certs:/etc/nginx/certs
       - .:/var/www/ctm/contexto_unificado
     # genera el certificado autofirmado la primera vez y arranca nginx
-    command: >
-      sh -c "mkdir -p /etc/nginx/certs
-      && ([ -f /etc/nginx/certs/dev.crt ] || openssl req -x509 -nodes -newkey rsa:2048 -days 3650
-          -subj '/CN=localhost' -keyout /etc/nginx/certs/dev.key -out /etc/nginx/certs/dev.crt)
-      && exec nginx -g 'daemon off;'"
+    command: ["sh", "-c", "mkdir -p /etc/nginx/certs && ([ -f /etc/nginx/certs/dev.crt ] || openssl req -x509 -nodes -newkey rsa:2048 -days 3650 -subj /CN=localhost -keyout /etc/nginx/certs/dev.key -out /etc/nginx/certs/dev.crt) && exec nginx -g 'daemon off;'"]
     depends_on:
       - php
 

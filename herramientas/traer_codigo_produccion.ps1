@@ -16,8 +16,10 @@ param(
 $RaizRepo = Resolve-Path (Join-Path $PSScriptRoot "..")
 $Paquete = Join-Path $env:TEMP "prod_ctm.tgz"
 $ListaProd = Join-Path $env:TEMP "lista_prod.txt"
-$CarpetaProd = Split-Path $RutaProd -Parent
-$NombreProd = Split-Path $RutaProd -Leaf
+# rutas Linux: no usar Split-Path (en Windows cambia las barras)
+$RutaProd = $RutaProd.TrimEnd("/")
+$CarpetaProd = $RutaProd.Substring(0, $RutaProd.LastIndexOf("/"))
+$NombreProd = $RutaProd.Substring($RutaProd.LastIndexOf("/") + 1)
 # Archivos del repo que no estan en produccion y NO deben borrarse (herramientas de desarrollo)
 $Protegidos = "^(herramientas/|docker/|docker-compose.yml|ENTORNO_DESARROLLO.md|PROMPT_MEJORA_CTM.md|\.gitignore|.*/config/config\.php$|.*/config/config\.local\.php\.ejemplo$)"
 

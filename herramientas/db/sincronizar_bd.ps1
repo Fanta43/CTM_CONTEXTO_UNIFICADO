@@ -7,7 +7,7 @@
 param(
     [string]$Alias = "ctm223",
     [string[]]$Bases = @("contexto_unificado", "morebius", "ctm_ocsweb"),
-    [string]$UsuarioBd = "farinong",
+    [string]$UsuarioBd = "root",
     [string]$ClaveLocal = "ctm_dev",
     [switch]$SoloBajar,
     [switch]$SoloCargar

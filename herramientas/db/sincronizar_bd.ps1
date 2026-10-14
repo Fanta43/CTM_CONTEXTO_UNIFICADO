@@ -1,13 +1,14 @@
 # Trae las bases de datos de torito (produccion) y las carga en el MariaDB local de Docker.
 # Uso:  powershell -ExecutionPolicy Bypass -File herramientas\db\sincronizar_bd.ps1
-#       (opcional) -Bases contexto_unificado,morebius -SoloBajar
+#       (opcional) -Bases contexto_unificado,morebius   (sin -Bases trae TODAS las bases de torito)
+#       (opcional) -SoloBajar / -SoloCargar
 # Requisitos: ssh ctm223 funcionando, Docker Desktop corriendo con "docker compose up -d".
 # La contrasena de MariaDB en torito se pide al ejecutar, salvo que exista
 # herramientas\db\credenciales.local.ps1 (ignorado por git, ver el .ejemplo) con $UsuarioBd y $ClaveBd.
 
 param(
     [string]$Alias = "ctm223",
-    [string[]]$Bases = @("contexto_unificado", "morebius", "ctm_ocsweb"),
+    [string[]]$Bases = @(),
     [string]$UsuarioBd = "root",
     [string]$ClaveLocal = "ctm_dev",
     [switch]$SoloBajar,
@@ -33,6 +34,18 @@ function Pedir-ClaveBd {
     $clave = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
     [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)
     return $clave
+}
+
+function Listar-Bases-Torito {
+    param([string]$Clave)
+    $sistema = @("information_schema", "mysql", "performance_schema", "sys")
+    $comando = "MYSQL_PWD='$Clave' mysql --user=$UsuarioBd -N -e 'SHOW DATABASES'"
+    $todas = ssh $Alias $comando
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "ERROR listando las bases de torito (revisa usuario/contrasena)"
+        exit 1
+    }
+    return $todas | Where-Object { $_ -and ($sistema -notcontains $_) }
 }
 
 function Bajar-Dump {
@@ -81,12 +94,19 @@ Cargar-Credenciales
 
 if (-not $SoloCargar) {
     $clave = Pedir-ClaveBd
+    if ($Bases.Count -eq 0) {
+        $Bases = Listar-Bases-Torito -Clave $clave
+        Write-Host "Bases en torito: $($Bases -join ', ')"
+    }
     foreach ($base in $Bases) { Bajar-Dump -Base $base -Clave $clave | Out-Null }
     $clave = $null
 }
 
 if (-not $SoloBajar) {
     Verificar-Docker
+    if ($Bases.Count -eq 0) {
+        $Bases = Get-ChildItem $CarpetaDumps -Filter *.sql | ForEach-Object { $_.BaseName }
+    }
     foreach ($base in $Bases) { Cargar-Dump -Base $base }
 }
 

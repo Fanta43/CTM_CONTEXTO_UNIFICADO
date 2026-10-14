@@ -8,8 +8,8 @@ los cambios a produccion con seguridad.
 | Entorno | Donde | Codigo | Base de datos | URL |
 |---|---|---|---|---|
 | Desarrollo | Notebook, Docker Desktop | este repo (rama de trabajo) | copia de produccion, local | http://localhost:8080/ctm/contexto_unificado/ |
-| Test | torito `/var/www/ctm/contexto_unificado_test` | rama en prueba | `contexto_unificado_test` (copia) | la que configure nginx en torito |
-| Produccion | torito `/var/www/ctm/contexto_unificado` | rama `main` | `contexto_unificado` | la actual |
+| Test | torito `/var/www/ctm/contexto_unificado_test` | rama en prueba | `contexto_unificado_test` (copia) | https://172.16.1.223/ctm/contexto_unificado_test/ |
+| Produccion | torito `/var/www/ctm/contexto_unificado` | rama `main` | `contexto_unificado` | https://172.16.1.223/ctm/contexto_unificado/ |
 
 Produccion (torito, 172.16.1.223): Ubuntu 26.04, nginx 1.28, PHP 8.5, MariaDB 11.8.
 El `docker-compose.yml` levanta exactamente esas versiones.
@@ -110,15 +110,45 @@ Opciones: `-Bases contexto_unificado` (solo una), `-SoloBajar` (deja los .sql en
 `herramientas/db/dumps/` sin cargarlos), `-SoloCargar` (carga los .sql que ya estan).
 Los dumps no se suben a git.
 
-## 4. Armar el entorno de test en torito (una sola vez)
+## 4. Poner produccion bajo git en torito (una sola vez)
 
-Pendiente de confirmar la estructura real de `/var/www/ctm` y la configuracion de nginx
-en torito. La idea:
+Hoy produccion en torito (`/var/www/ctm/contexto_unificado`, servido en
+`https://172.16.1.223/ctm/contexto_unificado/`) son archivos copiados. Para que se
+actualice con `git pull`, `herramientas/torito/adoptar_git_produccion.sh` la convierte en un
+checkout del repo sin perder nada: clona al lado, muestra las diferencias, copia lo que
+produccion tenga de mas, genera los `config.local.php` con las credenciales reales y recien
+al final intercambia las carpetas. La carpeta anterior queda como respaldo
+`contexto_unificado_old_FECHA`.
 
-1. Clonar el repo en `/var/www/ctm/contexto_unificado_test`.
-2. Crear la base `contexto_unificado_test` como copia de `contexto_unificado`.
-3. Crear los `config.local.php` de cada modulo apuntando a esa base y a la URL de test.
-4. Agregar en nginx un `location` o un `server` para la carpeta de test.
+```powershell
+ssh ctm223 "curl -fsSL https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/torito/adoptar_git_produccion.sh -o /tmp/adoptar_git_produccion.sh"
+ssh -t ctm223 "bash /tmp/adoptar_git_produccion.sh"
+```
+
+Pide confirmacion (`SI`) despues de mostrar las diferencias, y usuario y contrasena de
+MariaDB para los `config.local.php`. Si falla por permisos, correrlo con `sudo`.
+Hacerlo fuera de horario de uso: el intercambio de carpetas corta el sitio unos segundos.
+
+IMPORTANTE: el `config.php` del repo tiene valores de desarrollo (localhost, root sin
+clave). Produccion funciona porque su `config.local.php` manda. Nunca desplegar a
+produccion sin esos archivos; `desplegar.ps1` avisa si faltan.
+
+## 5. Armar el entorno de test en torito (una sola vez)
+
+Como nginx sirve todo `/var/www`, una carpeta al lado de produccion queda publicada sola.
+`herramientas/torito/crear_entorno_test.sh` clona el repo en
+`/var/www/ctm/contexto_unificado_test`, crea la base `contexto_unificado_test` como copia de
+la de produccion y genera los `config.local.php` apuntando a esa base y a
+`https://172.16.1.223/ctm/contexto_unificado_test/`. Las bases `morebius` y `ctm_ocsweb`
+quedan apuntando a las reales, que son de solo lectura.
+
+```powershell
+ssh ctm223 "curl -fsSL https://raw.githubusercontent.com/Fanta43/CTM_CONTEXTO_UNIFICADO/main/herramientas/torito/crear_entorno_test.sh -o /tmp/crear_entorno_test.sh"
+ssh -t ctm223 "bash /tmp/crear_entorno_test.sh"
+```
+
+Para refrescar la base de test con datos de produccion, volver a correrlo. Para actualizar
+el codigo de test con una rama: `herramientas\desplegar.ps1 -Destino test -Rama mi-rama`.
 
 ## Comandos utiles
 

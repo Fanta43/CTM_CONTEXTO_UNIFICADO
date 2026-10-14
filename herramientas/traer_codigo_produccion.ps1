@@ -2,8 +2,9 @@
 # Uso:  powershell -ExecutionPolicy Bypass -File herramientas\traer_codigo_produccion.ps1
 #       (opcional) -BorrarFaltantes   borra del repo los archivos que ya no existen en produccion
 # Que hace:
-#   1. Empaqueta en torito la carpeta de produccion (sin .git ni config/config.php).
-#   2. La descarga y la descomprime encima del repo local, pisando los archivos del repo.
+#   1. Comprime en torito la carpeta de produccion (sin .git ni config/config.php) y la
+#      descarga por ssh sin escribir nada en el servidor.
+#   2. La descomprime encima del repo local, pisando los archivos del repo.
 #   3. Muestra un resumen de lo que cambio para revisarlo con "git status" y hacer commit.
 # No toca produccion. No trae config/config.php (tiene credenciales): eso va en config.local.php.
 
@@ -37,18 +38,22 @@ function Verificar-Repo {
     }
 }
 
-function Empaquetar-Produccion {
-    Write-Host "Empaquetando $RutaProd en torito..."
-    ssh $Alias "cd $CarpetaProd && tar czf /tmp/prod_ctm.tgz --exclude='.git' --exclude='*/config/config.php' --exclude='*/config/config.local.php' $NombreProd && find $NombreProd -type f -not -path '*/.git/*' | sed 's#^$NombreProd/##' | sort > /tmp/lista_prod.txt && ls -lh /tmp/prod_ctm.tgz"
-    if ($LASTEXITCODE -ne 0) { Write-Host "ERROR empaquetando en torito"; exit 1 }
-}
-
-function Descargar-Paquete {
-    Write-Host "Descargando..."
-    scp -q "${Alias}:/tmp/prod_ctm.tgz" $Paquete
-    scp -q "${Alias}:/tmp/lista_prod.txt" $ListaProd
-    if ($LASTEXITCODE -ne 0) { Write-Host "ERROR descargando"; exit 1 }
-    ssh $Alias "rm -f /tmp/prod_ctm.tgz /tmp/lista_prod.txt"
+function Descargar-Produccion {
+    # tar comprime en torito y manda el flujo por ssh; no se escribe nada en el servidor
+    # (serviciosau tiene cuota de disco). cmd /c hace falta para que la redireccion sea binaria.
+    Write-Host "Descargando $RutaProd desde torito (puede tardar varios minutos)..."
+    $excluir = "--exclude=.git --exclude='*/config/config.php' --exclude='*/config/config.local.php'"
+    $comando = "ssh $Alias `"cd $CarpetaProd && tar czf - $excluir $NombreProd`" > `"$Paquete`""
+    cmd /c $comando
+    if ($LASTEXITCODE -ne 0 -or -not (Test-Path $Paquete) -or (Get-Item $Paquete).Length -lt 1024) {
+        Write-Host "ERROR descargando el paquete"
+        exit 1
+    }
+    $mb = [math]::Round((Get-Item $Paquete).Length / 1MB, 1)
+    Write-Host "  Paquete: $Paquete ($mb MB)"
+    Write-Host "Descargando lista de archivos de produccion..."
+    ssh $Alias "cd $CarpetaProd && find $NombreProd -type f -not -path '*/.git/*' | sed 's#^$NombreProd/##' | sort" | Out-File -FilePath $ListaProd -Encoding utf8
+    if ($LASTEXITCODE -ne 0) { Write-Host "ERROR descargando la lista"; exit 1 }
 }
 
 function Extraer-Encima-Del-Repo {
@@ -111,7 +116,6 @@ function Mostrar-Resumen {
 }
 
 Verificar-Repo
-Empaquetar-Produccion
-Descargar-Paquete
+Descargar-Produccion
 Extraer-Encima-Del-Repo
 Mostrar-Resumen

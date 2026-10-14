@@ -30,6 +30,11 @@ Contexto:
 - El entorno local es Docker: nginx + PHP 8.5 (con las mismas extensiones que torito, incluidas
   soap, odbc, ldap, intl, gd) + MariaDB 11.8 + Adminer. Se entra por HTTPS en el puerto 8080
   con certificado autofirmado, porque la aplicacion fuerza HTTPS (ctm_entorno/default.php).
+- La base de datos tambien se replica completa: la aplicacion usa varias bases (contexto_unificado,
+  morebius, ctm_ocsweb, ctm_itsm y otras). El sincronizador trae TODAS las bases de torito.
+- Los config/config.php de produccion no estan en git (tienen contrasenas); cada modulo usa
+  config/config.local.php (ignorado por git) para URL, errores y a que base apunta cada conexion.
+  Los .ejemplo deben reflejar el mismo mapa de bases que produccion.
 
 Pasos a seguir, en este orden:
 
@@ -76,8 +81,10 @@ Pasos a seguir, en este orden:
      docker compose ps
    Tienen que quedar web, php, db y adminer en "Up".
 
-9. Traer las bases de produccion (no pide nada si existe credenciales.local.ps1):
+9. Traer TODAS las bases de produccion (no pide nada si existe credenciales.local.ps1):
      powershell -ExecutionPolicy Bypass -File herramientas\db\sincronizar_bd.ps1
+   Imprime "Bases en torito: ..." y carga cada una en el MariaDB local. Para refrescar una sola:
+     ... sincronizar_bd.ps1 -Bases contexto_unificado
 
 10. Probar:
      curl.exe -k -sI https://localhost:8080/ctm/contexto_unificado/ctm_entorno/default.php | Select-Object -First 1
@@ -111,8 +118,13 @@ Errores ya conocidos y su causa, para que no me hagas dar vueltas:
   volcados de produccion al repo por no revisarlo y hubo que rehacer el commit y publicar con --force.
 - El .gitignore de torito es mas completo que el viejo (no excluye modulos); al traer codigo de
   produccion lo reemplaza. Hay que volver a agregarle las tres reglas de arriba.
-- El login pasa por intermedio_aico.php, que valida contra un web service SOAP. Si falla solo
-  en la notebook, puede ser que ese servicio no acepte conexiones desde fuera de torito.
+- El login pasa por intermedio_aico.php, que valida contra un web service SOAP (funciona desde
+  la notebook). Para eso hace falta la extension soap en la imagen de PHP.
+- "Table 'xxx.yyy' doesn't exist" despues del login: falta esa base en el MariaDB local.
+  Correr el sincronizador sin -Bases para traer todas, o con -Bases xxx para esa sola.
+- Si un modulo consulta la base equivocada, revisar el mapa de conexiones en su
+  config/config.local.php contra el config.php de produccion:
+    ssh ctm223 "grep -rn -E \"'(host|user|database)'\" /var/www/ctm/contexto_unificado/ctm_*/config/config.php | grep -v password"
 
 Flujo de trabajo una vez instalado (esta en ENTORNO_DESARROLLO.md):
 rama nueva -> editar -> probar en https://localhost:8080 -> commit + push al Gitea de torito -> PR en Gitea

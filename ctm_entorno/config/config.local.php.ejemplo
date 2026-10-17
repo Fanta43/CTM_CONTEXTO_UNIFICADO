@@ -1,0 +1,17 @@
+<?php
+/**
+ * CONFIGURACIÓN LOCAL - ctm_entorno
+ * Copiar este archivo como config.local.php en esta misma carpeta y ajustar.
+ * config.local.php NO se sube a git. Lo que se define acá manda sobre config.php.
+ *
+ * Valores de abajo: entorno Docker de desarrollo (docker-compose.yml en la raíz).
+ */
+
+define('APP_URL', 'https://localhost:8080/ctm/contexto_unificado/ctm_entorno/');
+define('MOSTRAR_ERRORES', '1');
+
+define('DB_CONFIGS', serialize([
+    'default' => ['host' => 'db', 'user' => 'root', 'password' => 'ctm_dev', 'database' => 'contexto_unificado', 'port' => 3306, 'charset' => 'utf8mb4', 'cert' => null],
+    'db1'     => ['host' => 'db', 'user' => 'root', 'password' => 'ctm_dev', 'database' => 'contexto_unificado', 'port' => 3306, 'charset' => 'utf8mb4', 'cert' => null],
+    'db2'     => ['host' => 'db', 'user' => 'root', 'password' => 'ctm_dev', 'database' => 'contexto_unificado', 'port' => 3306, 'charset' => 'utf8mb4', 'cert' => null],
+]));

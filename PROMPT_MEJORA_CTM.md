@@ -6,7 +6,7 @@ Usa este prompt como contexto inicial en cada sesión de trabajo sobre los módu
 
 ## CONTEXTO DEL SISTEMA
 
-Trabajo con un sistema web llamado **CTM (Contexto Unificado)** compuesto por 3 módulos PHP que gestionan el ciclo completo de equipamiento IT de una organización. Los 3 módulos comparten la base de datos MySQL **contexto_unificado** y corren sobre XAMPP en localhost. El código es PHP procedural (sin frameworks), con funciones simples, sin objetos. Quiero mantener ese estilo: código sencillo en funciones.
+Trabajo con un sistema web llamado **CTM (Contexto Unificado)** compuesto por 3 módulos PHP que gestionan el ciclo completo de equipamiento IT de una organización. Los 3 módulos comparten la base de datos MariaDB **contexto_unificado**. Producción corre en el servidor torito (172.16.1.223, nginx + PHP 8.5 + MariaDB 11.8); el desarrollo se hace en la notebook con Docker replicando ese entorno. El código es PHP procedural (sin frameworks), con funciones simples, sin objetos. Quiero mantener ese estilo: código sencillo en funciones.
 
 ### Módulos:
 
@@ -30,6 +30,19 @@ Trabajo con un sistema web llamado **CTM (Contexto Unificado)** compuesto por 3 
    - 20 tablas ciclo_* + 4 tablas pres_k2b_* + 5 vistas + 1 stored procedure
    - Integra: K2B (compras), PHPMailer (email), Ollama (IA local), Twilio (SMS sin uso)
    - Menús: CONFIGURACIÓN (8 sub), PRESUPUESTOS (4), REVISIÓN (4), SOLICITUDES K2B (2), REPORTES (4), CIERRE (4)
+
+### Servidores y entornos:
+
+- **PRODUCCIÓN: servidor "torito", IP 172.16.1.223.** Ubuntu 26.04, nginx 1.28, PHP 8.5, MariaDB 11.8.
+  Código en `/var/www/ctm/contexto_unificado`, servido en `https://172.16.1.223/ctm/contexto_unificado/`.
+  Acceso SSH con el alias `ctm223` (usuario `serviciosau`). MariaDB con usuario `root`.
+  **Es el servidor real en uso: nunca probar cambios directamente ahí.**
+- **Test:** misma máquina, carpeta `/var/www/ctm/contexto_unificado_test` y base `contexto_unificado_test`,
+  en `https://172.16.1.223/ctm/contexto_unificado_test/`.
+- **Desarrollo:** notebook con Docker (nginx + PHP 8.5 + MariaDB 11.8, mismas versiones que producción),
+  repo en `C:\dev\ctm\contexto_unificado`, URL `https://localhost:8080/ctm/contexto_unificado/`.
+- La fuente de verdad del código es producción: el repo debe ser copia exacta de torito
+  (`herramientas\traer_codigo_produccion.ps1`). Detalle completo en `ENTORNO_DESARROLLO.md`.
 
 ### Stack técnico común:
 - PHP 8.2+ procedural (funciones, sin objetos ni frameworks)

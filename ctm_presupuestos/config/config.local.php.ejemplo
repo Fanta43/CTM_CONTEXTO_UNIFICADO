@@ -1,0 +1,52 @@
+<?php
+/**
+ * CONFIGURACIÓN LOCAL - ctm_presupuestos
+ * Copiar este archivo como config.local.php en esta misma carpeta y ajustar.
+ * config.local.php NO se sube a git: cada entorno (notebook, torito test,
+ * torito producción) tiene el suyo. Lo que se define acá manda sobre config.php.
+ *
+ * Valores de abajo: entorno Docker de desarrollo (docker-compose.yml en la raíz).
+ */
+
+// URL base de este módulo en este entorno
+$servidor = 'https://localhost:8080/ctm/contexto_unificado/ctm_presupuestos/';
+
+// 'on' en desarrollo, 'off' en producción
+define('MOSTRAR_ERRORES', 'on');
+
+// Ollama: si corre en la notebook usar host.docker.internal; si corre en torito usar su IP
+define('OLLAMA_HOST', 'http://host.docker.internal:11434');
+
+// Conexiones a base de datos (mismos índices que config.php)
+function getDbConfig($db = '0') {
+    $configs = [
+        '0' => [
+            'host'     => 'db',
+            'user'     => 'root',
+            'password' => 'ctm_dev',
+            'database' => 'contexto_unificado',
+            'port'     => 3306,
+            'charset'  => 'utf8mb4',
+            'cert'     => ''
+        ],
+        '1' => [
+            'host'     => 'db',
+            'user'     => 'root',
+            'password' => 'ctm_dev',
+            'database' => 'contexto_unificado',
+            'port'     => 3306,
+            'charset'  => 'utf8mb4',
+            'cert'     => ''
+        ],
+        '2' => [
+            'host'     => 'db',
+            'user'     => 'root',
+            'password' => 'ctm_dev',
+            'database' => 'contexto_unificado',
+            'port'     => 3306,
+            'charset'  => 'utf8mb4',
+            'cert'     => ''
+        ],
+    ];
+    return isset($configs[$db]) ? $configs[$db] : $configs['0'];
+}

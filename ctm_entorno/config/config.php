@@ -11,7 +11,15 @@ if (!defined('ENTO_APP')) {
 
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
-ini_set('display_errors', '1');
+// ── Configuración local (desarrollo / producción, NO se sube a git) ─────────
+// Si existe config/config.local.php se carga primero y sus valores mandan.
+// Ver config.local.php.ejemplo en esta misma carpeta.
+if (file_exists(__DIR__ . '/config.local.php')) {
+    require_once __DIR__ . '/config.local.php';
+}
+
+if (!defined('MOSTRAR_ERRORES')) define('MOSTRAR_ERRORES', '1');
+ini_set('display_errors', MOSTRAR_ERRORES);
 ini_set('log_errors', '1');
 error_reporting(E_ALL);
 

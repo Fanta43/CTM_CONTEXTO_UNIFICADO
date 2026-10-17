@@ -114,6 +114,7 @@ no puede actualizar torito.
 | `preparar_notebook.ps1` | instala Git y Docker, clona desde Gitea, crea los `config.local.php` |
 | `db/sincronizar_bd.ps1` | trae todas las bases de torito al MariaDB local (credenciales en `db/credenciales.local.ps1`, ignorado) |
 | `db/analizar_equipo.py CODIGO` | informe de un equipo en todas las bases locales con linea de tiempo de fechas y causas de discrepancia |
+| `db/auditar_fechas.py [CODIGO]` | cuantifica en toda la replica las causas de fechas inconsistentes heredadas de la migracion |
 | `traer_codigo_produccion.ps1` | copia el codigo de torito encima del repo local para commitearlo |
 | `publicar_repo_en_torito.ps1` | crea el repo en Gitea si falta y publica el repo local |
 | `desplegar.ps1 -Destino test|prod` | `git pull` por SSH en torito; prod solo acepta `main` y pide confirmacion |

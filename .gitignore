@@ -65,3 +65,4 @@ config.local.php
 herramientas/db/dumps/*
 !herramientas/db/dumps/.gitkeep
 herramientas/db/credenciales.local.ps1
+herramientas/db/analisis/
